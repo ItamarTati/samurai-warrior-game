@@ -1,8 +1,8 @@
 let canvas = document.createElement("canvas");
 let context = canvas.getContext("2d");
 
-canvas.width = 800;
-canvas.height = 700;
+canvas.width = 730;
+canvas.height = 560;
 
 document.body.appendChild(canvas);
 
@@ -25,11 +25,10 @@ heroImg.onload = function () {
 };
 
 let hero = {
-    speed: 3,
+    speed: 10,
     x: 0,
     y: 0
 };
-
 
 let keyPresses = {};
 
@@ -43,21 +42,19 @@ function keyUpListener(event) {
     keyPresses[event.key] = false;
 }
 
-
 let walkCycle = [0, 1, 2, 3];
-
 let walkIndex = 0;
-
 let width = 64;
-
 let height = 64;
-
 let SCALE = 2;
-
 let SCALED_WIDTH = SCALE * width;
-
 let SCALED_HEIGHT = SCALE * height;
-
+let hasMoved = false;
+const DOWN = 0;
+const UP = 3;
+const LEFT = 1;
+const RIGHT = 2;
+let currentDirection = DOWN;
 
 function drawFrame(frameX, frameY, canvasX, canvasY) {
     context.drawImage(
@@ -73,16 +70,17 @@ function drawFrame(frameX, frameY, canvasX, canvasY) {
     );
 }
 
-let hasMoved = false;
-
-const DOWN = 0;
-const UP = 3;
-const LEFT = 1;
-const RIGHT = 2;
-let currentDirection = DOWN;
+function animateSprite() {
+    if (hasMoved) {
+        walkIndex++;
+        hasMoved = false;
+        if (walkIndex >= walkCycle.length) {
+            walkIndex = 0;
+        }
+    }
+}
 
 function moveHero() {
-
     if (keyPresses['ArrowUp'] || keyPresses['w']) {
         hero.y -= hero.speed;
         hasMoved = true;
@@ -104,26 +102,35 @@ function moveHero() {
         currentDirection = RIGHT;
     }
 
-    if(hasMoved) {
-        walkIndex++
-        if (walkIndex >= walkCycle.length) {
-            walkIndex = 0;
-        }
-        hasMoved = false
-    }
+    animateSprite();
+
     drawFrame(walkCycle[walkIndex], currentDirection, hero.x, hero.y);
 }
-
 
 function loadImage() {
     if (backgroundReady) {
         context.drawImage(backgroundImg, 0, 0);
     }
 }
+
+let lastUpdateTime = 0;
+const frameInterval = 1000 / 10;
+
+function Update() {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - lastUpdateTime;
+
+    if (elapsedTime >= frameInterval) {
+        lastUpdateTime = currentTime;
+        gameLoop();
+    }
+
+    requestAnimationFrame(Update);
+}
+
 function gameLoop() {
     loadImage();
     moveHero();
-    requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+Update();
