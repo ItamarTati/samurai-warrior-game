@@ -46,7 +46,7 @@ let walkCycle = [0, 1, 2, 3];
 let walkIndex = 0;
 let width = 64;
 let height = 64;
-let SCALE = 2;
+let SCALE = 1;
 let SCALED_WIDTH = SCALE * width;
 let SCALED_HEIGHT = SCALE * height;
 let hasMoved = false;
@@ -78,33 +78,39 @@ function animateSprite() {
             walkIndex = 0;
         }
     }
+    drawFrame(walkCycle[walkIndex], currentDirection, hero.x, hero.y);
 }
 
 function moveHero() {
     if (keyPresses['ArrowUp'] || keyPresses['w']) {
-        hero.y -= hero.speed;
-        hasMoved = true;
         currentDirection = UP;
+        if (hero.y - hero.speed >= 0) {
+            hero.y -= hero.speed;
+        }
+        hasMoved = true;
     }
     if (keyPresses['ArrowDown'] || keyPresses['s']) {
-        hero.y += hero.speed;
-        hasMoved = true;
         currentDirection = DOWN;
+        if (hero.y + SCALED_HEIGHT + hero.speed <= canvas.height) {
+            hero.y += hero.speed;
+        }
+        hasMoved = true;
     }
     if (keyPresses['ArrowLeft'] || keyPresses['a']) {
-        hero.x -= hero.speed;
-        hasMoved = true;
         currentDirection = LEFT;
+        if (hero.x - hero.speed >= 0) {
+            hero.x -= hero.speed;
+        }
+        hasMoved = true;
     }
     if (keyPresses['ArrowRight'] || keyPresses['d']) {
-        hero.x += hero.speed;
-        hasMoved = true;
         currentDirection = RIGHT;
+        if (hero.x + SCALED_WIDTH + hero.speed <= canvas.width) {
+            hero.x += hero.speed;
+        }
+        hasMoved = true;
     }
-
     animateSprite();
-
-    drawFrame(walkCycle[walkIndex], currentDirection, hero.x, hero.y);
 }
 
 function loadImage() {
