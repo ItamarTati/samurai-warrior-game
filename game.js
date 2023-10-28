@@ -18,7 +18,7 @@ backgroundImg.onload = function () {
 let heroReady = false;
 let heroImg = new Image();
 
-heroImg.src = "hero.png"
+heroImg.src = "hero-sprite-sheet.png"
 
 heroImg.onload = function () {
     heroReady = true;
@@ -33,53 +33,91 @@ let hero = {
 
 let keyPresses = {};
 
-// Use the 'keydown' event to detect key presses and store them in keyPresses
 document.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event) {
     keyPresses[event.key] = true;
 }
 
-// Use the 'keyup' event to detect key releases
 document.addEventListener('keyup', keyUpListener, false);
 function keyUpListener(event) {
     keyPresses[event.key] = false;
 }
 
-function moveChar(deltaX, deltaY, direction) {
-    if (hero.x + deltaX > 0) {
-        hero.x += deltaX + hero.speed;
-    }
-    if (hero.y + deltaY > 0) {
-        hero.y += deltaY + hero.speed;
-    }
-    currentDirection = direction;
+
+let walkCycle = [0, 1, 2, 3];
+
+let walkIndex = 0;
+
+let width = 64;
+
+let height = 64;
+
+let SCALE = 2;
+
+let SCALED_WIDTH = SCALE * width;
+
+let SCALED_HEIGHT = SCALE * height;
+
+
+function drawFrame(frameX, frameY, canvasX, canvasY) {
+    context.drawImage(
+        heroImg,
+        frameX * width,
+        frameY * height,
+        width,
+        height,
+        canvasX,
+        canvasY,
+        SCALED_WIDTH,
+        SCALED_HEIGHT
+    );
 }
+
+let hasMoved = false;
+
+const DOWN = 0;
+const UP = 3;
+const LEFT = 1;
+const RIGHT = 2;
+let currentDirection = DOWN;
+
 function moveHero() {
+
     if (keyPresses['ArrowUp'] || keyPresses['w']) {
-        // Move the hero up
         hero.y -= hero.speed;
+        hasMoved = true;
+        currentDirection = UP;
     }
     if (keyPresses['ArrowDown'] || keyPresses['s']) {
-        // Move the hero down
         hero.y += hero.speed;
+        hasMoved = true;
+        currentDirection = DOWN;
     }
     if (keyPresses['ArrowLeft'] || keyPresses['a']) {
-        // Move the hero left
         hero.x -= hero.speed;
+        hasMoved = true;
+        currentDirection = LEFT;
     }
     if (keyPresses['ArrowRight'] || keyPresses['d']) {
-        // Move the hero right
         hero.x += hero.speed;
+        hasMoved = true;
+        currentDirection = RIGHT;
     }
+
+    if(hasMoved) {
+        walkIndex++
+        if (walkIndex >= walkCycle.length) {
+            walkIndex = 0;
+        }
+        hasMoved = false
+    }
+    drawFrame(walkCycle[walkIndex], currentDirection, hero.x, hero.y);
 }
 
 
 function loadImage() {
     if (backgroundReady) {
         context.drawImage(backgroundImg, 0, 0);
-    }
-    if (heroReady) {
-        context.drawImage(heroImg, hero.x, hero.y);
     }
 }
 function gameLoop() {
