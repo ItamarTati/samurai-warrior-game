@@ -1,15 +1,15 @@
 let canvas = document.createElement("canvas");
 let context = canvas.getContext("2d");
 
-canvas.width = 730;
-canvas.height = 560;
+canvas.width = 1000;
+canvas.height = 600;
 
 document.body.appendChild(canvas);
 
 let backgroundReady = false;
 let backgroundImg = new Image();
 
-backgroundImg.src = "market.png";
+backgroundImg.src = "field.png";
 
 backgroundImg.onload = function () {
     backgroundReady = true;
@@ -25,9 +25,18 @@ heroImg.onload = function () {
 };
 
 let hero = {
-    speed: 10,
-    x: 0,
-    y: 0
+    speed: 15,
+    x: 500,
+    y: 300
+};
+
+let houseReady = false;
+let houseImg = new Image();
+
+houseImg.src = "house.png";
+
+houseImg.onload = function () {
+    houseReady = true;
 };
 
 let keyPresses = {};
@@ -82,46 +91,135 @@ function animateSprite() {
 }
 
 function moveHero() {
-    if (keyPresses['ArrowUp'] || keyPresses['w']) {
-        currentDirection = UP;
-        if (hero.y - hero.speed >= 0) {
-            hero.y -= hero.speed;
-        }
-        hasMoved = true;
-    }
-    if (keyPresses['ArrowDown'] || keyPresses['s']) {
-        currentDirection = DOWN;
-        if (hero.y + SCALED_HEIGHT + hero.speed <= canvas.height) {
-            hero.y += hero.speed;
-        }
-        hasMoved = true;
-    }
-    if (keyPresses['ArrowLeft'] || keyPresses['a']) {
-        currentDirection = LEFT;
-        if (hero.x - hero.speed >= 0) {
-            hero.x -= hero.speed;
-        }
-        hasMoved = true;
-    }
-    if (keyPresses['ArrowRight'] || keyPresses['d']) {
-        currentDirection = RIGHT;
-        if (hero.x + SCALED_WIDTH + hero.speed <= canvas.width) {
-            hero.x += hero.speed;
-        }
-        hasMoved = true;
-    }
+    handleMovement();
     animateSprite();
+}
+
+function handleMovement() {
+    if (isMovingUp()) {
+        moveUp();
+    } else if (isMovingDown()) {
+        moveDown();
+    } else if (isMovingLeft()) {
+        moveLeft();
+    } else if (isMovingRight()) {
+        moveRight();
+    }
+}
+
+function isMovingUp() {
+    return keyPresses['ArrowUp'] || keyPresses['w'];
+}
+
+function isMovingDown() {
+    return keyPresses['ArrowDown'] || keyPresses['s'];
+}
+
+function isMovingLeft() {
+    return keyPresses['ArrowLeft'] || keyPresses['a'];
+}
+
+function isMovingRight() {
+    return keyPresses['ArrowRight'] || keyPresses['d'];
+}
+
+function moveUp() {
+    if (canMoveUp()) {
+        currentDirection = UP;
+        hero.y -= hero.speed;
+    }
+    hasMoved = true;
+}
+
+function moveDown() {
+    if (canMoveDown()) {
+        currentDirection = DOWN;
+        hero.y += hero.speed;
+    }
+    hasMoved = true;
+}
+
+function moveLeft() {
+    if (canMoveLeft()) {
+        currentDirection = LEFT;
+        hero.x -= hero.speed;
+    }
+    hasMoved = true;
+}
+
+function moveRight() {
+    if (canMoveRight()) {
+        currentDirection = RIGHT;
+        hero.x += hero.speed;
+    }
+    hasMoved = true;
+}
+
+function canMoveUp() {
+    return isNotLeavingTheMapGoingUp() && !isCollidingWithHouse();
+}
+
+function canMoveDown() {
+    return isNotLeavingTheMapGoingDown();
+}
+
+function canMoveLeft() {
+    return isNotLeavingTheMapGoingLeft() && !isCollidingWithHouse();
+}
+
+function canMoveRight() {
+    return isNotLeavingTheMapGoingRight();
+}
+
+function isNotLeavingTheMapGoingUp() {
+    return hero.y - hero.speed >= 0;
+}
+
+function isNotLeavingTheMapGoingDown() {
+    return hero.y + SCALED_HEIGHT + hero.speed <= canvas.height;
+}
+
+function isNotLeavingTheMapGoingLeft() {
+    return hero.x - hero.speed >= 0;
+}
+
+function isNotLeavingTheMapGoingRight() {
+    return hero.x + SCALED_WIDTH + hero.speed <= canvas.width;
+}
+
+function isCollidingWithHouse() {
+    const heroLeft = hero.x;
+    const heroRight = hero.x + SCALED_WIDTH;
+    const heroTop = hero.y;
+    const heroBottom = hero.y + SCALED_HEIGHT;
+
+    const houseLeft = 0;
+    const houseRight = houseImg.width - 20;
+    const houseTop = 0;
+    const houseBottom = houseImg.height - 20;
+
+    return heroLeft < houseRight &&
+        heroRight > houseLeft &&
+        heroTop < houseBottom &&
+        heroBottom > houseTop;
 }
 
 function loadImage() {
     if (backgroundReady) {
-        context.drawImage(backgroundImg, 0, 0);
+        context.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+    }
+    if (houseReady) {
+        context.drawImage(houseImg, 0, 0)
     }
 }
 
 let lastUpdateTime = 0;
 const frameInterval = 1000 / 10;
 
+function gameLoop() {
+    loadImage();
+    moveHero();
+}
 function Update() {
     const currentTime = Date.now();
     const elapsedTime = currentTime - lastUpdateTime;
@@ -134,9 +232,5 @@ function Update() {
     requestAnimationFrame(Update);
 }
 
-function gameLoop() {
-    loadImage();
-    moveHero();
-}
 
 Update();
