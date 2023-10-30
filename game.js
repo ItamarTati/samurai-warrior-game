@@ -25,9 +25,9 @@ enemyImg.onload = function () {
 };
 
 let enemy = {
-    speed: 15,
-    x: 500,
-    y: 300,
+    speed: 2,
+    x: 800,
+    y: 400,
     health: 200
 };
 
@@ -83,7 +83,7 @@ const LEFT = 1;
 const RIGHT = 2;
 let currentDirection = DOWN;
 
-function drawFrame(frameX, frameY, canvasX, canvasY) {
+function drawHeroFrame(frameX, frameY, canvasX, canvasY) {
     context.drawImage(
         heroImg,
         frameX * width,
@@ -97,6 +97,45 @@ function drawFrame(frameX, frameY, canvasX, canvasY) {
     );
 }
 
+let enemyWalkCycle = [0, 1, 2, 3];
+let enemyWalkIndex = 0;
+let enemyWidth = 64;
+let enemyHeight = 64;
+let ENEMY_SCALE = 1;
+let ENEMY_SCALED_WIDTH = ENEMY_SCALE * enemyWidth;
+let ENEMY_SCALED_HEIGHT = ENEMY_SCALE * enemyHeight;
+let enemyHasMoved = false;
+const ENEMY_DOWN = 0;
+const ENEMY_UP = 3;
+const ENEMY_LEFT = 1;
+const ENEMY_RIGHT = 2;
+let enemyCurrentDirection = DOWN;
+
+function drawEnemyFrame(frameX, frameY, canvasX, canvasY) {
+    context.drawImage(
+        enemyImg,
+        frameX * enemyWidth,
+        frameY * enemyHeight,
+        width,
+        height,
+        canvasX,
+        canvasY,
+        ENEMY_SCALED_WIDTH,
+        ENEMY_SCALED_HEIGHT
+    );
+}
+
+function animateEnemySprite() {
+    if (enemyHasMoved) {
+        enemyWalkIndex++;
+        enemyHasMoved = false;
+        if (enemyWalkIndex >= enemyWalkCycle.length) {
+            enemyWalkIndex = 0;
+        }
+    }
+    drawEnemyFrame(enemyWalkCycle[enemyWalkIndex], enemyCurrentDirection, enemy.x, enemy.y);
+}
+
 function animateHeroSprite() {
     if (hasMoved) {
         walkIndex++;
@@ -105,7 +144,7 @@ function animateHeroSprite() {
             walkIndex = 0;
         }
     }
-    drawFrame(walkCycle[walkIndex], currentDirection, hero.x, hero.y);
+    drawHeroFrame(walkCycle[walkIndex], currentDirection, hero.x, hero.y);
 }
 
 function moveHero() {
@@ -229,17 +268,28 @@ function loadImage() {
     if (houseReady) {
         context.drawImage(houseImg, 0, 0)
     }
-    if (enemyReady) {
-        context.drawImage(enemyImg, 800, 400)
-    }
 }
 
 let lastUpdateTime = 0;
 const frameInterval = 1000 / 15;
 
+function moveEnemyTowardsPlayer() {
+    const deltaX = hero.x - enemy.x;
+    const deltaY = hero.y - enemy.y;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    const directionX = deltaX / distance;
+    const directionY = deltaY / distance;
+
+    enemy.x += directionX * enemy.speed;
+    enemy.y += directionY * enemy.speed;
+    animateEnemySprite();
+}
+
 function gameLoop() {
     loadImage();
     moveHero();
+    moveEnemyTowardsPlayer();
 }
 function Update() {
     const currentTime = Date.now();
