@@ -97,7 +97,7 @@ function drawFrame(frameX, frameY, canvasX, canvasY) {
     );
 }
 
-function animateSprite() {
+function animateHeroSprite() {
     if (hasMoved) {
         walkIndex++;
         hasMoved = false;
@@ -110,7 +110,7 @@ function animateSprite() {
 
 function moveHero() {
     handleMovement();
-    animateSprite();
+    animateHeroSprite();
 }
 
 function handleMovement() {
@@ -212,9 +212,9 @@ function isCollidingWithHouse() {
     const heroBottom = hero.y + SCALED_HEIGHT;
 
     const houseLeft = 0;
-    const houseRight = houseImg.width - 50;
+    const houseRight = houseImg.width - 60;
     const houseTop = 0;
-    const houseBottom = houseImg.height - 50;
+    const houseBottom = houseImg.height - 60;
 
     return heroLeft < houseRight &&
         heroRight > houseLeft &&
