@@ -142,32 +142,32 @@ function isMovingRight() {
 }
 
 function moveUp() {
+    currentDirection = UP;
     if (canMoveUp()) {
-        currentDirection = UP;
         hero.y -= hero.speed;
     }
     hasMoved = true;
 }
 
 function moveDown() {
+    currentDirection = DOWN;
     if (canMoveDown()) {
-        currentDirection = DOWN;
         hero.y += hero.speed;
     }
     hasMoved = true;
 }
 
 function moveLeft() {
+    currentDirection = LEFT;
     if (canMoveLeft()) {
-        currentDirection = LEFT;
         hero.x -= hero.speed;
     }
     hasMoved = true;
 }
 
 function moveRight() {
+    currentDirection = RIGHT;
     if (canMoveRight()) {
-        currentDirection = RIGHT;
         hero.x += hero.speed;
     }
     hasMoved = true;
