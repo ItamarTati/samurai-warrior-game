@@ -97,10 +97,10 @@ function drawHeroFrame(frameX, frameY, canvasX, canvasY) {
     );
 }
 
-let enemyWalkCycle = [0, 1, 2, 3];
+let enemyWalkCycle = [0, 1, 2, 3, 4, 5, 6, 7];
 let enemyWalkIndex = 0;
-let enemyWidth = 64;
-let enemyHeight = 64;
+let enemyWidth = 60;
+let enemyHeight = 60;
 let ENEMY_SCALE = 1;
 let ENEMY_SCALED_WIDTH = ENEMY_SCALE * enemyWidth;
 let ENEMY_SCALED_HEIGHT = ENEMY_SCALE * enemyHeight;
@@ -283,6 +283,22 @@ function moveEnemyTowardsPlayer() {
 
     enemy.x += directionX * enemy.speed;
     enemy.y += directionY * enemy.speed;
+
+    if (Math.abs(directionX) > Math.abs(directionY)) {
+        if (directionX > 0) {
+            enemyCurrentDirection = ENEMY_RIGHT;
+        } else {
+            enemyCurrentDirection = ENEMY_LEFT;
+        }
+    } else {
+        if (directionY > 0) {
+            enemyCurrentDirection = ENEMY_DOWN;
+        } else {
+            enemyCurrentDirection = ENEMY_UP;
+        }
+    }
+
+    enemyHasMoved = true;
     animateEnemySprite();
 }
 
