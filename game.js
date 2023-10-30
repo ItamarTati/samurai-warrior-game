@@ -15,6 +15,23 @@ backgroundImg.onload = function () {
     backgroundReady = true;
 };
 
+let enemyReady = false;
+let enemyImg = new Image();
+
+enemyImg.src = "enemy-sprite-sheet.png"
+
+enemyImg.onload = function () {
+    enemyReady = true;
+};
+
+let enemy = {
+    speed: 15,
+    x: 500,
+    y: 300,
+    health: 200
+};
+
+
 let heroReady = false;
 let heroImg = new Image();
 
@@ -27,7 +44,8 @@ heroImg.onload = function () {
 let hero = {
     speed: 15,
     x: 500,
-    y: 300
+    y: 300,
+    health: 2000
 };
 
 let houseReady = false;
@@ -194,9 +212,9 @@ function isCollidingWithHouse() {
     const heroBottom = hero.y + SCALED_HEIGHT;
 
     const houseLeft = 0;
-    const houseRight = houseImg.width - 20;
+    const houseRight = houseImg.width - 50;
     const houseTop = 0;
-    const houseBottom = houseImg.height - 20;
+    const houseBottom = houseImg.height - 50;
 
     return heroLeft < houseRight &&
         heroRight > houseLeft &&
@@ -211,10 +229,13 @@ function loadImage() {
     if (houseReady) {
         context.drawImage(houseImg, 0, 0)
     }
+    if (enemyReady) {
+        context.drawImage(enemyImg, 800, 400)
+    }
 }
 
 let lastUpdateTime = 0;
-const frameInterval = 1000 / 10;
+const frameInterval = 1000 / 15;
 
 function gameLoop() {
     loadImage();
