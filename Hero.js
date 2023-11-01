@@ -156,7 +156,7 @@ class Hero {
         const barWidth = (this.health / this.maxHealth) * 100;
 
         const barHeight = 10;
-        const barX = this.x - 15;
+        const barX = this.x - 50 + (this.SCALED_WIDTH / 2);
         const barY = this.y + this.SCALED_HEIGHT + 5;
 
         context.fillStyle = 'red';
@@ -167,9 +167,8 @@ class Hero {
     }
 
     updateHealth(newHealth) {
-        this.health = this.health - newHealth;
+        this.health = Math.max(0, this.health - newHealth);
     }
-
 }
 
 export default Hero;
