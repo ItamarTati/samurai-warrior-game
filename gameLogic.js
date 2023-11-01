@@ -25,21 +25,21 @@ function isCollidingWithHouse() {
 }
 
 function isCollidingWithEnemy() {
-    const heroLeft = hero.x;
-    const heroRight = hero.x + hero.SCALED_WIDTH;
-    const heroTop = hero.y;
-    const heroBottom = hero.y + hero.SCALED_HEIGHT;
+    const heroHitBoxLeft = hero.x + hero.SCALED_WIDTH * 0.25;
+    const heroHitBoxRight = hero.x + hero.SCALED_WIDTH * 0.75;
+    const heroHitBoxTop = hero.y + hero.SCALED_HEIGHT * 0.25;
+    const heroHitBoxBottom = hero.y + hero.SCALED_HEIGHT * 0.75;
 
-    const enemyLeft = enemy.x;
-    const enemyRight = enemy.x + enemy.ENEMY_SCALED_WIDTH;
-    const enemyTop = enemy.y;
-    const enemyBottom = enemy.y + enemy.ENEMY_SCALED_HEIGHT;
+    const enemyHitBoxLeft = enemy.x + enemy.ENEMY_SCALED_WIDTH * 0.25;
+    const enemyHitBoxRight = enemy.x + enemy.ENEMY_SCALED_WIDTH * 0.75;
+    const enemyHitBoxTop = enemy.y + enemy.ENEMY_SCALED_HEIGHT * 0.25;
+    const enemyHitBoxBottom = enemy.y + enemy.ENEMY_SCALED_HEIGHT * 0.75;
 
     return (
-        heroLeft < enemyRight &&
-        heroRight > enemyLeft &&
-        heroTop < enemyBottom &&
-        heroBottom > enemyTop
+        heroHitBoxLeft < enemyHitBoxRight &&
+        heroHitBoxRight > enemyHitBoxLeft &&
+        heroHitBoxTop < enemyHitBoxBottom &&
+        heroHitBoxBottom > enemyHitBoxTop
     );
 }
 
