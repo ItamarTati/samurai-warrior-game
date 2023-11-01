@@ -160,7 +160,7 @@ class Hero {
         const barY = this.y + this.SCALED_HEIGHT + 5;
 
         context.fillStyle = 'red';
-        context.fillRect(barX, barY, this.SCALED_WIDTH, barHeight);
+        context.fillRect(barX, barY, 100, barHeight);
 
         context.fillStyle = 'blue';
         context.fillRect(barX, barY, barWidth, barHeight);
