@@ -1,13 +1,14 @@
 import {canvas, context} from "./canvas.js";
 import {keyPresses} from "./userInput.js";
-import {heroImg, houseImg} from "./images.js";
+import {heroImg} from "./images.js";
 
 class Hero {
-    constructor(x, y, speed, health) {
+    constructor(x, y, speed, maxHealth) {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.health = health;
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.walkCycle = [0, 1, 2, 3];
         this.walkIndex = 0;
         this.width = 64;
@@ -21,11 +22,13 @@ class Hero {
         this.LEFT = 1;
         this.RIGHT = 2;
         this.currentDirection = this.DOWN;
+        this.isCollidingWithHouse = false;
     }
 
     moveHero() {
         this.handleMovement();
         this.animateHeroSprite();
+        this.drawHealthBar();
     }
 
     handleMovement() {
@@ -89,7 +92,7 @@ class Hero {
     }
 
     canMoveUp() {
-        return this.isNotLeavingTheMapGoingUp() && !this.isCollidingWithHouse();
+        return this.isNotLeavingTheMapGoingUp() && !this.isCollidingWithHouse;
     }
 
     canMoveDown() {
@@ -97,7 +100,7 @@ class Hero {
     }
 
     canMoveLeft() {
-        return this.isNotLeavingTheMapGoingLeft() && !this.isCollidingWithHouse();
+        return this.isNotLeavingTheMapGoingLeft() && !this.isCollidingWithHouse;
     }
 
     canMoveRight() {
@@ -144,21 +147,27 @@ class Hero {
         );
     }
 
-    isCollidingWithHouse() {
-        const heroLeft = this.x;
-        const heroRight = this.x + this.SCALED_WIDTH;
-        const heroTop = this.y;
-        const heroBottom = this.y + this.SCALED_HEIGHT;
+    updateIsCollidingWithHouse(colliding) {
+        this.isCollidingWithHouse = colliding
+    }
 
-        const houseLeft = 0;
-        const houseRight = houseImg.width - 60;
-        const houseTop = 0;
-        const houseBottom = houseImg.height - 60;
 
-        return heroLeft < houseRight &&
-            heroRight > houseLeft &&
-            heroTop < houseBottom &&
-            heroBottom > houseTop;
+    drawHealthBar() {
+        const barWidth = (this.health / this.maxHealth) * 100;
+
+        const barHeight = 10;
+        const barX = this.x - 15;
+        const barY = this.y + this.SCALED_HEIGHT + 5;
+
+        context.fillStyle = 'red';
+        context.fillRect(barX, barY, this.SCALED_WIDTH, barHeight);
+
+        context.fillStyle = 'blue';
+        context.fillRect(barX, barY, barWidth, barHeight);
+    }
+
+    updateHealth(newHealth) {
+        this.health = this.health - newHealth;
     }
 
 }
