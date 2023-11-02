@@ -1,0 +1,26 @@
+#game-container {
+    display: flex;
+    justify-content: center;
+}
+
+.menu {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+#start-button,
+#restart-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#start-button:hover,
+#restart-button:hover {
+    background-color: #005F77;
+}
