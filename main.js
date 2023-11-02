@@ -1,7 +1,6 @@
-import { gameLoop } from './gameLogic.js';
+import Game from './Game.js';
 
 let lastUpdateTime = 0;
-const frameInterval = 1000 / 15;
 let isGameRunning = false;
 
 const startMenu = document.getElementById("start-menu");
@@ -9,6 +8,8 @@ const gameOverMenu = document.getElementById("game-over");
 const startButton = document.getElementById("start-button");
 const restartButton = document.getElementById("restart-button");
 const scoreElement = document.getElementById("score");
+
+const game = new Game();
 
 function showStartMenu() {
     startMenu.style.display = "block";
@@ -29,25 +30,32 @@ function showGameOver(score) {
 startButton.addEventListener("click", () => {
     isGameRunning = true;
     showGame();
+    game.resetGame();
     Update();
 });
 
 restartButton.addEventListener("click", () => {
     isGameRunning = true;
     showGame();
-    gameLoop();
+    game.resetGame();
+    Update();
 });
 
 function Update() {
+    const frameInterval = 1000 / 15;
     const currentTime = Date.now();
     const elapsedTime = currentTime - lastUpdateTime;
 
     if (isGameRunning) {
         if (elapsedTime >= frameInterval) {
             lastUpdateTime = currentTime;
-            gameLoop();
+            game.gameLoop();
         }
         requestAnimationFrame(Update);
+    }
+    if (game.hero.health === 0) {
+        isGameRunning = false;
+        showGameOver(200);
     }
 }
 
