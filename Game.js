@@ -12,7 +12,7 @@ export default class Game {
     constructor() {
         this.hero = new Hero(500, 300, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
-        this.map = new Map(canvas.width, canvas.height);
+        this.map = new Map(704, 320);
         this.house = new House(0, 0);
     }
 
