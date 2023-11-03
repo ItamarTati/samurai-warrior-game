@@ -1,11 +1,18 @@
-import {houseImg} from "./images.js";
+import {houseImg, houseReady} from "./images.js";
+import {context} from "./canvas.js";
 
 class House {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.width = houseImg.width - 60;
-        this.height = houseImg.height - 60;
+        this.width = houseImg.width;
+        this.height = houseImg.height;
+    }
+
+    draw() {
+        if (houseReady) {
+            context.drawImage(houseImg, this.x, this.y);
+        }
     }
 }
 

@@ -1,5 +1,3 @@
-import { canvas, context } from "./canvas.js";
-
 export let backgroundReady = false;
 export let backgroundImg = new Image();
 
@@ -36,12 +34,3 @@ heroImg.onload = function () {
     heroReady = true;
 };
 
-export function loadImages() {
-    if (backgroundReady) {
-        context.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
-    }
-
-    if (houseReady) {
-        context.drawImage(houseImg, 0, 0);
-    }
-}

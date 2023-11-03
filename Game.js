@@ -1,6 +1,9 @@
 import Hero from './Hero.js';
 import Enemy from './Enemy.js';
-import { loadImages, houseImg } from './images.js';
+import { houseImg } from './images.js';
+import Map from "./Map.js";
+import {canvas} from "./canvas.js";
+import House from "./House.js";
 
 const heroSpeed = 15;
 const maxHealth = 2000;
@@ -9,6 +12,8 @@ export default class Game {
     constructor() {
         this.hero = new Hero(500, 300, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
+        this.map = new Map(canvas.width, canvas.height);
+        this.house = new House(0, 0);
     }
 
     isCollidingWithHouse() {
@@ -18,9 +23,9 @@ export default class Game {
         const heroBottom = this.hero.y + this.hero.SCALED_HEIGHT;
 
         const houseLeft = 0;
-        const houseRight = houseImg.width - 60;
+        const houseRight = houseImg.width - 40;
         const houseTop = 0;
-        const houseBottom = houseImg.height - 60;
+        const houseBottom = houseImg.height - 40;
 
         return heroLeft < houseRight &&
             heroRight > houseLeft &&
@@ -55,9 +60,18 @@ export default class Game {
         this.enemy.moveTowardsPlayer(this.hero.x, this.hero.y);
     }
 
+    loadMap() {
+        this.map.draw();
+    }
+
+    placeHouse() {
+        this.house.draw();
+    }
+
     gameLoop() {
-        loadImages();
+        this.loadMap();
         this.moveHero();
+        this.placeHouse();
         this.moveEnemyTowardsPlayer();
         if (this.isCollidingWithHouse()) {
             this.hero.updateIsCollidingWithHouse(true);
@@ -73,5 +87,6 @@ export default class Game {
     resetGame() {
         this.hero = new Hero(500, 300, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
+        this.map = new Map(canvas.width, canvas.height);
     }
 }
