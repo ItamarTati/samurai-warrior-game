@@ -2,7 +2,7 @@ import Hero from './Hero.js';
 import Enemy from './Enemy.js';
 import { houseImg } from './images.js';
 import Map from "./Map.js";
-import {canvas} from "./canvas.js";
+import {canvas, context} from "./canvas.js";
 import House from "./House.js";
 
 const heroSpeed = 15;
@@ -52,6 +52,12 @@ export default class Game {
         );
     }
 
+    drawGameOver() {
+        context.fillStyle = "black";
+        context.font = "40px Arial";
+        context.fillText("Game Over", canvas.width / 2 - 100, canvas.height / 2);
+    }
+
     moveHero() {
         this.hero.moveHero();
     }
@@ -81,6 +87,9 @@ export default class Game {
 
         if (this.isCollidingWithEnemy()) {
             this.hero.updateHealth(10)
+        }
+        if (this.hero.health <= 0) {
+            this.drawGameOver()
         }
     }
 
