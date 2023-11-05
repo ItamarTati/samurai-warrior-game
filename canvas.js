@@ -1,8 +1,8 @@
 export const canvas = document.createElement("canvas");
 export const context = canvas.getContext("2d");
 
-canvas.width = 704;
-canvas.height = 320;
+canvas.width = 5000;
+canvas.height = 5000;
 
 document.body.appendChild(canvas);
 
