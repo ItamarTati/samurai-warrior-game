@@ -7,12 +7,19 @@ import House from "./House.js";
 
 const heroSpeed = 15;
 const maxHealth = 2000;
+const mapWidth = 704;
+const mapHeight = 320;
+const heroWidth = 64;
+const heroHeight = 64;
+const SCALE = 1;
+const initialHeroX = mapWidth / 2 - (heroWidth * SCALE) / 2;
+const initialHeroY = mapHeight / 2 - (heroHeight * SCALE) / 2;
 
 export default class Game {
     constructor() {
-        this.hero = new Hero(500, 300, heroSpeed, maxHealth);
+        this.hero = new Hero(initialHeroX, initialHeroY, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
-        this.map = new Map(704, 320);
+        this.map = new Map(mapWidth, mapHeight);
         this.house = new House(0, 0);
     }
 
@@ -66,19 +73,29 @@ export default class Game {
         this.enemy.moveTowardsPlayer(this.hero.x, this.hero.y);
     }
 
-    loadMap() {
-        this.map.draw();
+    loadMap(offsetX, offsetY) {
+        const mapX = -offsetX;
+        const mapY = -offsetY;
+        this.map.draw(mapX, mapY);
     }
 
-    placeHouse() {
-        this.house.draw();
+    placeHouse(offsetX, offsetY) {
+        this.house.draw(offsetX, offsetY);
     }
-
     gameLoop() {
-        this.loadMap();
+        const playerScreenX = canvas.width / 2;
+        const playerScreenY = canvas.height / 2;
+
+        const offsetX = playerScreenX - this.hero.x - this.hero.SCALED_WIDTH / 2;
+        const offsetY = playerScreenY - this.hero.y - this.hero.SCALED_HEIGHT / 2;
+        this.loadMap(offsetX, offsetY);
+
         this.moveHero();
-        this.placeHouse();
-        this.moveEnemyTowardsPlayer();
+
+        this.placeHouse(offsetX, offsetY);
+
+        this.moveEnemyTowardsPlayer(offsetX, offsetY);
+
         if (this.isCollidingWithHouse()) {
             this.hero.updateIsCollidingWithHouse(true);
         } else {
@@ -86,13 +103,13 @@ export default class Game {
         }
 
         if (this.isCollidingWithEnemy()) {
-            this.hero.updateHealth(10)
+            this.hero.updateHealth(10);
         }
+
         if (this.hero.health <= 0) {
-            this.drawGameOver()
+            this.drawGameOver();
         }
     }
-
     resetGame() {
         this.hero = new Hero(500, 300, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);

@@ -22,8 +22,8 @@ class Hero {
         this.LEFT = 1;
         this.RIGHT = 2;
         this.currentDirection = this.DOWN;
-        this.isCollidingWithHouse = false;
     }
+
 
     moveHero() {
         this.handleMovement();
@@ -92,19 +92,19 @@ class Hero {
     }
 
     canMoveUp() {
-        return this.isNotLeavingTheMapGoingUp() && !this.isCollidingWithHouse;
+        return true
     }
 
     canMoveDown() {
-        return this.isNotLeavingTheMapGoingDown();
+        return true
     }
 
     canMoveLeft() {
-        return this.isNotLeavingTheMapGoingLeft() && !this.isCollidingWithHouse;
+        return true
     }
 
     canMoveRight() {
-        return this.isNotLeavingTheMapGoingRight();
+        return true
     }
 
     isNotLeavingTheMapGoingUp() {

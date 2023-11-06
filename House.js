@@ -9,9 +9,9 @@ class House {
         this.height = houseImg.height;
     }
 
-    draw() {
+    draw(offsetX, offsetY) {
         if (houseReady) {
-            context.drawImage(houseImg, this.x, this.y);
+            context.drawImage(houseImg, this.x + offsetX, this.y + offsetY);
         }
     }
 }
