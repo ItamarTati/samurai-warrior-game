@@ -7,8 +7,8 @@ import House from "./House.js";
 
 const heroSpeed = 15;
 const maxHealth = 2000;
-const mapWidth = 704;
-const mapHeight = 320;
+const mapWidth = 828;
+const mapHeight = 508;
 const heroWidth = 64;
 const heroHeight = 64;
 const SCALE = 1;
@@ -85,9 +85,8 @@ export default class Game {
     gameLoop() {
         const playerScreenX = canvas.width / 2;
         const playerScreenY = canvas.height / 2;
-
-        const offsetX = playerScreenX - this.hero.x - this.hero.SCALED_WIDTH / 2;
-        const offsetY = playerScreenY - this.hero.y - this.hero.SCALED_HEIGHT / 2;
+        const offsetX = playerScreenX - ((this.hero.x - this.hero.SCALED_WIDTH) / 2);
+        const offsetY = playerScreenY - ((this.hero.y - this.hero.SCALED_HEIGHT) / 2);
         this.loadMap(offsetX, offsetY);
 
         this.moveHero();
