@@ -8,6 +8,7 @@ class Map {
     }
 
     draw(offsetX, offsetY) {
+        console.log(backgroundImg, 0, 0, this.width, this.height, -offsetX, -offsetY, this.width, this.height)
         if (backgroundReady) {
             context.drawImage(backgroundImg, 0, 0, this.width, this.height, -offsetX, -offsetY, this.width, this.height);
         }

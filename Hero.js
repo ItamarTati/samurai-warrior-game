@@ -1,4 +1,4 @@
-import {canvas, context} from "./canvas.js";
+import {context} from "./canvas.js";
 import {keyPresses} from "./userInput.js";
 import {heroImg} from "./images.js";
 
@@ -6,6 +6,8 @@ class Hero {
     constructor(x, y, speed, maxHealth) {
         this.x = x;
         this.y = y;
+        this.gameX = 500;
+        this.gameY = 500;
         this.speed = speed;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
@@ -62,7 +64,7 @@ class Hero {
     moveUp() {
         this.currentDirection = this.UP;
         if (this.canMoveUp()) {
-            this.y -= this.speed;
+            this.gameY -= this.speed;
         }
         this.hasMoved = true;
     }
@@ -70,7 +72,7 @@ class Hero {
     moveDown() {
         this.currentDirection = this.DOWN;
         if (this.canMoveDown()) {
-            this.y += this.speed;
+            this.gameY += this.speed;
         }
         this.hasMoved = true;
     }
@@ -78,7 +80,7 @@ class Hero {
     moveLeft() {
         this.currentDirection = this.LEFT;
         if (this.canMoveLeft()) {
-            this.x -= this.speed;
+            this.gameX -= this.speed;
         }
         this.hasMoved = true;
     }
@@ -86,7 +88,7 @@ class Hero {
     moveRight() {
         this.currentDirection = this.RIGHT;
         if (this.canMoveRight()) {
-            this.x += this.speed;
+            this.gameX += this.speed;
         }
         this.hasMoved = true;
     }
@@ -107,21 +109,6 @@ class Hero {
         return true
     }
 
-    isNotLeavingTheMapGoingUp() {
-        return this.y - this.speed >= 0;
-    }
-
-    isNotLeavingTheMapGoingDown() {
-        return this.y + this.SCALED_HEIGHT + this.speed <= canvas.height;
-    }
-
-    isNotLeavingTheMapGoingLeft() {
-        return this.x - this.speed >= 0;
-    }
-
-    isNotLeavingTheMapGoingRight() {
-        return this.x + this.SCALED_WIDTH + this.speed <= canvas.width;
-    }
     animateHeroSprite() {
         if (this.hasMoved) {
             this.walkIndex++;

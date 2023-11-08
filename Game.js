@@ -9,18 +9,17 @@ const heroSpeed = 15;
 const maxHealth = 2000;
 const mapWidth = 828;
 const mapHeight = 508;
-const heroWidth = 64;
-const heroHeight = 64;
-const SCALE = 1;
-const initialHeroX = mapWidth / 2 - (heroWidth * SCALE) / 2;
-const initialHeroY = mapHeight / 2 - (heroHeight * SCALE) / 2;
+
+
 
 export default class Game {
     constructor() {
-        this.hero = new Hero(initialHeroX, initialHeroY, heroSpeed, maxHealth);
+        this.hero = new Hero(300, 300, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
         this.map = new Map(mapWidth, mapHeight);
         this.house = new House(0, 0);
+        this.offsetX = 0
+        this.offsetY = 0
     }
 
     isCollidingWithHouse() {
@@ -65,8 +64,10 @@ export default class Game {
         context.fillText("Game Over", canvas.width / 2 - 100, canvas.height / 2);
     }
 
-    moveHero() {
+    moveHero(offsetX, offsetY) {
+        this.loadMap(offsetX, offsetY);
         this.hero.moveHero();
+
     }
 
     moveEnemyTowardsPlayer() {
@@ -74,26 +75,26 @@ export default class Game {
     }
 
     loadMap(offsetX, offsetY) {
+
         const mapX = -offsetX;
         const mapY = -offsetY;
+
+        console.log(mapX, mapY)
+
         this.map.draw(mapX, mapY);
     }
 
     placeHouse(offsetX, offsetY) {
         this.house.draw(offsetX, offsetY);
     }
+
     gameLoop() {
-        const playerScreenX = canvas.width / 2;
-        const playerScreenY = canvas.height / 2;
-        const offsetX = playerScreenX - ((this.hero.x - this.hero.SCALED_WIDTH) / 2);
-        const offsetY = playerScreenY - ((this.hero.y - this.hero.SCALED_HEIGHT) / 2);
-        this.loadMap(offsetX, offsetY);
+        this.offsetX = (canvas.width / 2) - ((this.hero.gameX - this.hero.SCALED_WIDTH) / 2);
+        this.offsetY = (canvas.height / 2) - ((this.hero.gameY - this.hero.SCALED_HEIGHT) / 2);
 
-        this.moveHero();
-
-        this.placeHouse(offsetX, offsetY);
-
-        this.moveEnemyTowardsPlayer(offsetX, offsetY);
+        this.moveHero(this.offsetX, this.offsetY);
+        this.moveEnemyTowardsPlayer();
+        this.placeHouse(this.offsetX, this.offsetY);
 
         if (this.isCollidingWithHouse()) {
             this.hero.updateIsCollidingWithHouse(true);
@@ -109,9 +110,18 @@ export default class Game {
             this.drawGameOver();
         }
     }
-    resetGame() {
-        this.hero = new Hero(500, 300, heroSpeed, maxHealth);
+
+
+    startGame() {
+        this.hero = new Hero(200, 200, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
-        this.map = new Map(canvas.width, canvas.height);
+        this.map = new Map(mapWidth, mapHeight);
+        this.house = new House(0, 0);
+    }
+    resetGame() {
+        this.hero = new Hero(200, 200, heroSpeed, maxHealth);
+        this.enemy = new Enemy(800, 400, 2, 200);
+        this.map = new Map(mapWidth, mapHeight);
+        this.house = new House(0, 0);
     }
 }

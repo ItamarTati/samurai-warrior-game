@@ -30,7 +30,7 @@ function showGameOver(score) {
 startButton.addEventListener("click", () => {
     isGameRunning = true;
     showGame();
-    game.resetGame();
+    game.startGame();
     Update();
 });
 
