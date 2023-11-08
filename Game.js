@@ -75,12 +75,8 @@ export default class Game {
     }
 
     loadMap(offsetX, offsetY) {
-
         const mapX = -offsetX;
         const mapY = -offsetY;
-
-        console.log(mapX, mapY)
-
         this.map.draw(mapX, mapY);
     }
 
@@ -89,6 +85,19 @@ export default class Game {
     }
 
     gameLoop() {
+
+        if (this.hero.x < 0) {
+            this.hero.x = this.map.width - this.hero.SCALED_WIDTH;
+        } else if (this.hero.x > this.map.width - this.hero.SCALED_WIDTH) {
+            this.hero.x = 0;
+        }
+
+        if (this.hero.y < 0) {
+            this.hero.y = this.map.height - this.hero.SCALED_HEIGHT;
+        } else if (this.hero.y > this.map.height - this.hero.SCALED_HEIGHT) {
+            this.hero.y = 0;
+        }
+
         this.offsetX = (canvas.width / 2) - ((this.hero.gameX - this.hero.SCALED_WIDTH) / 2);
         this.offsetY = (canvas.height / 2) - ((this.hero.gameY - this.hero.SCALED_HEIGHT) / 2);
 

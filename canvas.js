@@ -3,6 +3,8 @@ export const context = canvas.getContext("2d");
 
 canvas.width = 400;
 canvas.height = 400;
+context.imageSmoothingEnabled = false;
+
 
 document.body.appendChild(canvas);
 

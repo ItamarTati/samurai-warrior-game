@@ -1,4 +1,4 @@
-import { context } from "./canvas.js";
+import {context} from "./canvas.js";
 import {backgroundImg, backgroundReady} from "./images.js";
 
 class Map {
@@ -8,9 +8,23 @@ class Map {
     }
 
     draw(offsetX, offsetY) {
-        console.log(backgroundImg, 0, 0, this.width, this.height, -offsetX, -offsetY, this.width, this.height)
         if (backgroundReady) {
-            context.drawImage(backgroundImg, 0, 0, this.width, this.height, -offsetX, -offsetY, this.width, this.height);
+            const mapWidth = this.width;
+            const mapHeight = this.height;
+
+            const repeatX = 2
+            const repeatY = 2
+
+            const startX = -offsetX % mapWidth;
+            const startY = -offsetY % mapHeight;
+
+            for (let x = -1; x < repeatX; x++) {
+                for (let y = -1; y < repeatY; y++) {
+                    const drawX = startX + x * mapWidth;
+                    const drawY = startY + y * mapHeight;
+                    context.drawImage(backgroundImg, 0, 0, mapWidth, mapHeight, drawX, drawY, mapWidth, mapHeight);
+                }
+            }
         }
     }
 
