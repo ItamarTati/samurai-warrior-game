@@ -51,9 +51,8 @@ class Enemy {
         }
 
         this.enemyHasMoved = true;
-        console.log(((canvas.width / 2) + (this.gameX - this.ENEMY_SCALED_WIDTH) / 2) - playerX)
-        this.draw((((canvas.width / 2) + (this.gameX - this.ENEMY_SCALED_WIDTH) / 2)) - playerX,
-        (((canvas.height / 2) + (this.gameY - this.ENEMY_SCALED_HEIGHT) / 2)) - playerY);
+        this.draw((200 + this.gameX) - playerX,
+            (200 + this.gameY) - playerY)
     }
 
     draw(enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY) {

@@ -115,14 +115,14 @@ export default class Game {
         this.repeatMapForPlayer();
         this.setOffsets();
         this.moveHero(this.offsetX, this.offsetY);
-        this.moveEnemyTowardsPlayer(this.offsetX, this.offsetY);
+        this.moveEnemyTowardsPlayer();
         this.placeHouse(this.offsetX, this.offsetY);
         this.detectCollisions();
     }
 
 
     startGame() {
-        this.hero = new Hero(160, 160, heroSpeed, maxHealth);
+        this.hero = new Hero(200, 200, heroSpeed, maxHealth);
         this.enemy = new Enemy(200, 200, 2, 200);
         this.map = new Map(mapWidth, mapHeight);
         this.house = new House(0, 0);

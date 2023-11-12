@@ -3,9 +3,7 @@ import {keyPresses} from "./userInput.js";
 import {heroImg} from "./images.js";
 
 class Hero {
-    constructor(x, y, speed, maxHealth) {
-        this.x = x;
-        this.y = y;
+    constructor(gameX, gameY, speed, maxHealth) {
         this.gameX = 500;
         this.gameY = 500;
         this.speed = speed;
@@ -117,7 +115,7 @@ class Hero {
                 this.walkIndex = 0;
             }
         }
-        this.drawHeroFrame(this.walkCycle[this.walkIndex], this.currentDirection, this.x, this.y);
+        this.drawHeroFrame(this.walkCycle[this.walkIndex], this.currentDirection, 200, 200);
     }
 
     drawHeroFrame(frameX, frameY, canvasX, canvasY) {
