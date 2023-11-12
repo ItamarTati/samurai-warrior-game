@@ -1,10 +1,10 @@
 import {enemyImg} from "./images.js";
-import {context} from "./canvas.js";
+import {canvas, context} from "./canvas.js";
 
 class Enemy {
-    constructor(x, y, speed, health) {
-        this.x = x;
-        this.y = y;
+    constructor(gameX, gameY, speed, health) {
+        this.gameX = 200
+        this.gameY = 200
         this.speed = speed;
         this.health = health;
         this.enemyWalkCycle = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -23,15 +23,18 @@ class Enemy {
     }
 
     moveTowardsPlayer(playerX, playerY) {
-        const deltaX = playerX - this.x;
-        const deltaY = playerY - this.y;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
+        const deltaX = playerX - this.gameX;
+        const deltaY = playerY - this.gameY;
+        const distance = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+        console.log('delta', deltaX, deltaY)
         const directionX = deltaX / distance;
         const directionY = deltaY / distance;
 
-        this.x += directionX * this.speed;
-        this.y += directionY * this.speed;
+        this.gameX += directionX * this.speed;
+        this.gameY += directionY * this.speed;
+
+        console.log('enemy game place', this.gameX, this.gameY)
+
 
         if (Math.abs(directionX) > Math.abs(directionY)) {
             if (directionX > 0) {
@@ -48,13 +51,15 @@ class Enemy {
         }
 
         this.enemyHasMoved = true;
-        this.draw();
+        console.log(((canvas.width / 2) + (this.gameX - this.ENEMY_SCALED_WIDTH) / 2) - playerX)
+        this.draw((((canvas.width / 2) + (this.gameX - this.ENEMY_SCALED_WIDTH) / 2)) - playerX,
+        (((canvas.height / 2) + (this.gameY - this.ENEMY_SCALED_HEIGHT) / 2)) - playerY);
     }
 
-    draw() {
-        this.animateEnemySprite();
+    draw(enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY) {
+        this.animateEnemySprite(enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY);
     }
-    animateEnemySprite() {
+    animateEnemySprite(enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY) {
         if (this.enemyHasMoved) {
             this.enemyWalkIndex++;
             this.enemyHasMoved = false;
@@ -62,7 +67,7 @@ class Enemy {
                 this.enemyWalkIndex = 0;
             }
         }
-        this.drawEnemyFrame(this.enemyWalkCycle[this.enemyWalkIndex], this.enemyCurrentDirection, this.x, this.y);
+        this.drawEnemyFrame(this.enemyWalkCycle[this.enemyWalkIndex], this.enemyCurrentDirection, enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY);
     }
 
     drawEnemyFrame(frameX, frameY, canvasX, canvasY) {

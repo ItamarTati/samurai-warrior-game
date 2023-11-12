@@ -13,10 +13,6 @@ const mapHeight = 508;
 
 
 export default class Game {
-    constructor() {
-        this.offsetX = 0
-        this.offsetY = 0
-    }
 
     isCollidingWithHouse() {
         const heroLeft = this.hero.x;
@@ -65,8 +61,9 @@ export default class Game {
         this.hero.moveHero();
     }
 
-    moveEnemyTowardsPlayer(offsetX, offsetY) {
-        this.enemy.moveTowardsPlayer(this.hero.x, this.hero.y);
+    moveEnemyTowardsPlayer() {
+        console.log('offset', this.offsetX, this.offsetY)
+        this.enemy.moveTowardsPlayer(-this.offsetX, -this.offsetY);
     }
 
     loadMap(offsetX, offsetY) {
@@ -118,7 +115,7 @@ export default class Game {
         this.repeatMapForPlayer();
         this.setOffsets();
         this.moveHero(this.offsetX, this.offsetY);
-        this.moveEnemyTowardsPlayer();
+        this.moveEnemyTowardsPlayer(this.offsetX, this.offsetY);
         this.placeHouse(this.offsetX, this.offsetY);
         this.detectCollisions();
     }
@@ -126,7 +123,7 @@ export default class Game {
 
     startGame() {
         this.hero = new Hero(160, 160, heroSpeed, maxHealth);
-        this.enemy = new Enemy(800, 400, 2, 200);
+        this.enemy = new Enemy(200, 200, 2, 200);
         this.map = new Map(mapWidth, mapHeight);
         this.house = new House(0, 0);
     }
