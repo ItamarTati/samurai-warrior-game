@@ -25,35 +25,28 @@ class Enemy {
     moveTowardsPlayer(playerX, playerY) {
         const deltaX = playerX - this.gameX;
         const deltaY = playerY - this.gameY;
-        const distance = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
-        console.log('delta', deltaX, deltaY)
+        const distance = Math.hypot(deltaX, deltaY);
         const directionX = deltaX / distance;
         const directionY = deltaY / distance;
 
         this.gameX += directionX * this.speed;
         this.gameY += directionY * this.speed;
 
-        console.log('enemy game place', this.gameX, this.gameY)
-
-
-        if (Math.abs(directionX) > Math.abs(directionY)) {
-            if (directionX > 0) {
-                this.enemyCurrentDirection = this.ENEMY_RIGHT;
-            } else {
-                this.enemyCurrentDirection = this.ENEMY_LEFT;
-            }
-        } else {
-            if (directionY > 0) {
-                this.enemyCurrentDirection = this.ENEMY_DOWN;
-            } else {
-                this.enemyCurrentDirection = this.ENEMY_UP;
-            }
-        }
+        this.updateEnemyDirection(directionX, directionY);
 
         this.enemyHasMoved = true;
-        this.draw((200 + this.gameX) - playerX,
-            (200 + this.gameY) - playerY)
+        this.draw(((canvas.width / 2) + this.gameX) - playerX,
+            ((canvas.height / 2) + this.gameY) - playerY)
     }
+
+    updateEnemyDirection(directionX, directionY) {
+        if (Math.abs(directionX) > Math.abs(directionY)) {
+            this.enemyCurrentDirection = directionX > 0 ? this.ENEMY_RIGHT : this.ENEMY_LEFT;
+        } else {
+            this.enemyCurrentDirection = directionY > 0 ? this.ENEMY_DOWN : this.ENEMY_UP;
+        }
+    }
+
 
     draw(enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY) {
         this.animateEnemySprite(enemyPositionRelativeToPlayerScreenX, enemyPositionRelativeToPlayerScreenY);
