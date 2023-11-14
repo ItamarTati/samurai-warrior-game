@@ -1,4 +1,4 @@
-import {context} from "./canvas.js";
+import {context, screenCenterX, screenCenterY} from "./canvas.js";
 import {keyPresses} from "./userInput.js";
 import {heroImg} from "./images.js";
 
@@ -115,7 +115,7 @@ class Hero {
                 this.walkIndex = 0;
             }
         }
-        this.drawHeroFrame(this.walkCycle[this.walkIndex], this.currentDirection, 200, 200);
+        this.drawHeroFrame(this.walkCycle[this.walkIndex], this.currentDirection, screenCenterX, screenCenterY);
     }
 
     drawHeroFrame(frameX, frameY, canvasX, canvasY) {
@@ -141,8 +141,8 @@ class Hero {
         const barWidth = (this.health / this.maxHealth) * 100;
 
         const barHeight = 10;
-        const barX = this.x - 50 + (this.SCALED_WIDTH / 2);
-        const barY = this.y + this.SCALED_HEIGHT + 5;
+        const barX = screenCenterX - 50 + (this.SCALED_WIDTH / 2);
+        const barY = screenCenterY + this.SCALED_HEIGHT + 5;
 
         context.fillStyle = 'red';
         context.fillRect(barX, barY, 100, barHeight);

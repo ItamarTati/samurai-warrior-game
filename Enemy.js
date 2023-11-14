@@ -1,5 +1,5 @@
 import {enemyImg} from "./images.js";
-import {canvas, context} from "./canvas.js";
+import {context, screenCenterX, screenCenterY} from "./canvas.js";
 
 class Enemy {
     constructor(gameX, gameY, speed, health) {
@@ -35,8 +35,8 @@ class Enemy {
         this.updateEnemyDirection(directionX, directionY);
 
         this.enemyHasMoved = true;
-        this.draw(((canvas.width / 2) + this.gameX) - playerX,
-            ((canvas.height / 2) + this.gameY) - playerY)
+        this.draw((screenCenterX + this.gameX) - playerX,
+            (screenCenterY + this.gameY) - playerY)
     }
 
     updateEnemyDirection(directionX, directionY) {
