@@ -62,7 +62,6 @@ export default class Game {
     }
 
     moveEnemyTowardsPlayer() {
-        console.log('offset', this.offsetX, this.offsetY)
         this.enemy.moveTowardsPlayer(-this.offsetX, -this.offsetY);
     }
 
