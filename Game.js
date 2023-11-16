@@ -15,10 +15,10 @@ const mapHeight = 508;
 export default class Game {
 
     isCollidingWithHouse() {
-        const heroLeft = this.hero.x;
-        const heroRight = this.hero.x + this.hero.SCALED_WIDTH;
-        const heroTop = this.hero.y;
-        const heroBottom = this.hero.y + this.hero.SCALED_HEIGHT;
+        const heroLeft = this.hero.gameX;
+        const heroRight = this.hero.gameX + this.hero.SCALED_WIDTH;
+        const heroTop = this.hero.gameY;
+        const heroBottom = this.hero.gameY + this.hero.SCALED_HEIGHT;
 
         const houseLeft = 0;
         const houseRight = houseImg.width - 40;
@@ -32,15 +32,16 @@ export default class Game {
     }
 
     isCollidingWithEnemy() {
-        const heroHitBoxLeft = this.hero.x + this.hero.SCALED_WIDTH * 0.25;
-        const heroHitBoxRight = this.hero.x + this.hero.SCALED_WIDTH * 0.75;
-        const heroHitBoxTop = this.hero.y + this.hero.SCALED_HEIGHT * 0.25;
-        const heroHitBoxBottom = this.hero.y + this.hero.SCALED_HEIGHT * 0.75;
 
-        const enemyHitBoxLeft = this.enemy.x + this.enemy.ENEMY_SCALED_WIDTH * 0.25;
-        const enemyHitBoxRight = this.enemy.x + this.enemy.ENEMY_SCALED_WIDTH * 0.75;
-        const enemyHitBoxTop = this.enemy.y + this.enemy.ENEMY_SCALED_HEIGHT * 0.25;
-        const enemyHitBoxBottom = this.enemy.y + this.enemy.ENEMY_SCALED_HEIGHT * 0.75;
+        const heroHitBoxLeft = this.hero.gameX + this.hero.SCALED_WIDTH * 0.25;
+        const heroHitBoxRight = this.hero.gameX + this.hero.SCALED_WIDTH * 0.75;
+        const heroHitBoxTop = this.hero.gameY + this.hero.SCALED_HEIGHT * 0.25;
+        const heroHitBoxBottom = this.hero.gameY + this.hero.SCALED_HEIGHT * 0.75;
+
+        const enemyHitBoxLeft = this.enemy.gameX + this.enemy.ENEMY_SCALED_WIDTH * 0.25;
+        const enemyHitBoxRight = this.enemy.gameX + this.enemy.ENEMY_SCALED_WIDTH * 0.75;
+        const enemyHitBoxTop = this.enemy.gameY + this.enemy.ENEMY_SCALED_HEIGHT * 0.25;
+        const enemyHitBoxBottom = this.enemy.gameY + this.enemy.ENEMY_SCALED_HEIGHT * 0.75;
 
         return (
             heroHitBoxLeft < enemyHitBoxRight &&
@@ -102,6 +103,7 @@ export default class Game {
         }
 
         if (this.isCollidingWithEnemy()) {
+            console.log('here')
             this.hero.updateHealth(10);
         }
 
