@@ -20,10 +20,13 @@ export default class Game {
         const heroTop = this.hero.gameY;
         const heroBottom = this.hero.gameY + this.hero.SCALED_HEIGHT;
 
+
         const houseLeft = 0;
         const houseRight = houseImg.width - 40;
         const houseTop = 0;
         const houseBottom = houseImg.height - 40;
+
+
 
         return heroLeft < houseRight &&
             heroRight > houseLeft &&
@@ -37,11 +40,13 @@ export default class Game {
         const heroHitBoxRight = this.hero.gameX + this.hero.SCALED_WIDTH * 0.75;
         const heroHitBoxTop = this.hero.gameY + this.hero.SCALED_HEIGHT * 0.25;
         const heroHitBoxBottom = this.hero.gameY + this.hero.SCALED_HEIGHT * 0.75;
+        console.log(heroHitBoxLeft, heroHitBoxRight, heroHitBoxTop, heroHitBoxBottom)
 
         const enemyHitBoxLeft = this.enemy.gameX + this.enemy.ENEMY_SCALED_WIDTH * 0.25;
         const enemyHitBoxRight = this.enemy.gameX + this.enemy.ENEMY_SCALED_WIDTH * 0.75;
         const enemyHitBoxTop = this.enemy.gameY + this.enemy.ENEMY_SCALED_HEIGHT * 0.25;
         const enemyHitBoxBottom = this.enemy.gameY + this.enemy.ENEMY_SCALED_HEIGHT * 0.75;
+        console.log(enemyHitBoxLeft, enemyHitBoxRight, enemyHitBoxTop, enemyHitBoxBottom)
 
         return (
             heroHitBoxLeft < enemyHitBoxRight &&

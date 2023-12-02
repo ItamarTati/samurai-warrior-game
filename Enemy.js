@@ -22,9 +22,9 @@ class Enemy {
         this.enemyCurrentDirection = this.ENEMY_DOWN;
     }
 
-    moveTowardsPlayer(playerX, playerY) {
-        const deltaX = playerX - this.gameX;
-        const deltaY = playerY - this.gameY;
+    moveTowardsPlayer(offsetX, offsetY) {
+        const deltaX = offsetX - this.gameX;
+        const deltaY = offsetY - this.gameY;
         const distance = Math.hypot(deltaX, deltaY);
         const directionX = deltaX / distance;
         const directionY = deltaY / distance;
@@ -35,8 +35,8 @@ class Enemy {
         this.updateEnemyDirection(directionX, directionY);
 
         this.enemyHasMoved = true;
-        this.draw((screenCenterX + this.gameX) - playerX,
-            (screenCenterY + this.gameY) - playerY)
+        this.draw((screenCenterX + this.gameX) - offsetX,
+            (screenCenterY + this.gameY) - offsetY)
     }
 
     updateEnemyDirection(directionX, directionY) {
