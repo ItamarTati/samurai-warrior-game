@@ -14,7 +14,7 @@ const mapHeight = 508;
 
 export default class Game {
 
-    isCollidingWithHouse() {
+    isCollidingWithObject() {
         const heroLeft = this.hero.gameX;
         const heroRight = this.hero.gameX + this.hero.SCALED_WIDTH;
         const heroTop = this.hero.gameY;
@@ -34,26 +34,25 @@ export default class Game {
             heroBottom > houseTop;
     }
 
-    isCollidingWithEnemy() {
+    isCollidingWithAnEnemy() {
 
-        const heroHitBoxLeft = this.hero.gameX + this.hero.SCALED_WIDTH * 0.25;
-        const heroHitBoxRight = this.hero.gameX + this.hero.SCALED_WIDTH * 0.75;
-        const heroHitBoxTop = this.hero.gameY + this.hero.SCALED_HEIGHT * 0.25;
-        const heroHitBoxBottom = this.hero.gameY + this.hero.SCALED_HEIGHT * 0.75;
-        console.log(heroHitBoxLeft, heroHitBoxRight, heroHitBoxTop, heroHitBoxBottom)
+        const enemyPositions = this.enemies.map(enemy => ({
+            enemyPositionX: enemy.gameX + this.offsetX,
+            enemyPositionY: enemy.gameY + this.offsetY,
+        }));
 
-        const enemyHitBoxLeft = this.enemy.gameX + this.enemy.ENEMY_SCALED_WIDTH * 0.25;
-        const enemyHitBoxRight = this.enemy.gameX + this.enemy.ENEMY_SCALED_WIDTH * 0.75;
-        const enemyHitBoxTop = this.enemy.gameY + this.enemy.ENEMY_SCALED_HEIGHT * 0.25;
-        const enemyHitBoxBottom = this.enemy.gameY + this.enemy.ENEMY_SCALED_HEIGHT * 0.75;
-        console.log(enemyHitBoxLeft, enemyHitBoxRight, enemyHitBoxTop, enemyHitBoxBottom)
-
-        return (
-            heroHitBoxLeft < enemyHitBoxRight &&
-            heroHitBoxRight > enemyHitBoxLeft &&
-            heroHitBoxTop < enemyHitBoxBottom &&
-            heroHitBoxBottom > enemyHitBoxTop
+        const isCollidingWithAnyEnemy = enemyPositions.some(enemyPosition =>
+            {
+                return enemyPosition.enemyPositionX < 30 &&
+                    enemyPosition.enemyPositionY < 30 &&
+                    enemyPosition.enemyPositionX > -30 &&
+                    enemyPosition.enemyPositionY > -30
+            }
         );
+
+
+
+        return isCollidingWithAnyEnemy;
     }
 
     drawGameOver() {
@@ -101,13 +100,13 @@ export default class Game {
     }
 
     detectCollisions() {
-        if (this.isCollidingWithHouse()) {
+        if (this.isCollidingWithObject()) {
             this.hero.updateIsCollidingWithHouse(true);
         } else {
             this.hero.updateIsCollidingWithHouse(false);
         }
 
-        if (this.isCollidingWithEnemy()) {
+        if (this.isCollidingWithAnEnemy()) {
             console.log('here')
             this.hero.updateHealth(10);
         }
@@ -130,12 +129,14 @@ export default class Game {
     startGame() {
         this.hero = new Hero(200, 200, heroSpeed, maxHealth);
         this.enemy = new Enemy(200, 200, 2, 200);
+        this.enemies = [this.enemy];
         this.map = new Map(mapWidth, mapHeight);
         this.house = new House(0, 0);
     }
     resetGame() {
         this.hero = new Hero(400, 400, heroSpeed, maxHealth);
         this.enemy = new Enemy(800, 400, 2, 200);
+        this.enemies = [this.enemy];
         this.map = new Map(mapWidth, mapHeight);
         this.house = new House(0, 0);
     }
